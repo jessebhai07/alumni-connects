@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 async function getAlumniFromApi() {
   try {
     // Use relative URL for API calls in the same app
-    const baseUrl = process.env.NEXTAUTH_URL && "http://localhost:3002";
+    const baseUrl = process.env.NEXTAUTH_URL;
     
     const res = await axios.get(`${baseUrl}/api/alumni`, {
       timeout: 10000, // 10 second timeout
