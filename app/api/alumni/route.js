@@ -47,12 +47,9 @@ export async function POST(request) {
       );
     }
 
-    // Connect to MongoDB
+    // Connect to MongoDB - Fixed: removed deprecated options
     if (mongoose.connection.readyState === 0) {
-      await mongoose.connect(MONGODB_URI, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      });
+      await mongoose.connect(MONGODB_URI);
     }
 
     const formData = await request.formData();
@@ -89,7 +86,7 @@ export async function POST(request) {
     let photoUrl = '';
 
     if (photoFile && photoFile.size > 0) {
-      if (!process.env.CLOUDINARY_CLOUD_NAME) {
+      if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
         return NextResponse.json(
           { 
             success: false, 
@@ -113,7 +110,7 @@ export async function POST(request) {
               transformation: [
                 { width: 400, height: 400, crop: 'fill' },
                 { quality: 'auto' },
-                { format: 'webp' }
+                { format: 'auto' }
               ]
             },
             (error, result) => {
@@ -129,7 +126,7 @@ export async function POST(request) {
         return NextResponse.json(
           { 
             success: false, 
-            error: "Failed to upload photo. Please try with a different image." 
+            error: "Failed to upload photo. Please try with a different image or continue without photo." 
           },
           { status: 500 }
         );
@@ -192,6 +189,17 @@ export async function POST(request) {
       );
     }
 
+    // Handle MongoDB connection errors
+    if (error.name === 'MongoParseError' || error.name === 'MongoNetworkError') {
+      return NextResponse.json(
+        { 
+          success: false, 
+          error: "Database connection failed. Please try again later." 
+        },
+        { status: 500 }
+      );
+    }
+
     return NextResponse.json(
       { 
         success: false, 
@@ -229,6 +237,18 @@ export async function GET() {
 
   } catch (error) {
     console.error('Fetch error:', error);
+    
+    // Handle MongoDB connection errors
+    if (error.name === 'MongoParseError' || error.name === 'MongoNetworkError') {
+      return NextResponse.json(
+        { 
+          success: false, 
+          error: "Database connection failed. Please try again later." 
+        },
+        { status: 500 }
+      );
+    }
+
     return NextResponse.json(
       { 
         success: false, 

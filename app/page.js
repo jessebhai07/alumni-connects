@@ -38,8 +38,8 @@ export default function AlumniRegistrationForm() {
         return;
       }
 
-      if (file.size > 5 * 1024 * 1024) {
-        toast.error("ফাইলের সাইজ ৫MB এর কম হতে হবে");
+      if (file.size > 2 * 1024 * 1024) {
+        toast.error("ফাইলের সাইজ 2MB এর কম হতে হবে");
         return;
       }
 
