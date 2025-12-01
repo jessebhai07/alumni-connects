@@ -29,7 +29,7 @@ export default function SimpleFooter() {
           <div className="flex items-center gap-2 text-sm text-gray-400">
             <span>&copy; {currentYear}</span>
             <Heart className="w-4 h-4 text-red-500 fill-current" />
-            <span>Banshgram highschool Alumni</span>
+            <span>Banshgram High School Alumni</span>
           </div>
         </div>
       </div>

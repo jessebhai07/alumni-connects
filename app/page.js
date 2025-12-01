@@ -2,7 +2,18 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Upload, X, User, Info, BookOpen, Briefcase, MapPin, Phone, Mail, AlertCircle } from "lucide-react";
+import {
+  Upload,
+  X,
+  User,
+  Info,
+  BookOpen,
+  Briefcase,
+  MapPin,
+  Phone,
+  Mail,
+  AlertCircle,
+} from "lucide-react";
 import { toast } from "sonner";
 
 export default function AlumniRegistrationForm() {
@@ -23,18 +34,25 @@ export default function AlumniRegistrationForm() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+      const allowedTypes = [
+        "image/jpeg",
+        "image/jpg",
+        "image/png",
+        "image/webp",
+      ];
       if (!allowedTypes.includes(file.type)) {
-        toast.error("দয়া করে একটি বৈধ ছবির ফাইল নির্বাচন করুন (JPEG, PNG, WebP)");
+        toast.error(
+          "দয়া করে একটি বৈধ ছবির ফাইল নির্বাচন করুন (JPEG, PNG, WebP)"
+        );
         return;
       }
 
@@ -50,7 +68,7 @@ export default function AlumniRegistrationForm() {
 
   const removePhoto = () => {
     setPreviewUrl("");
-    const fileInput = document.getElementById('photo');
+    const fileInput = document.getElementById("photo");
     if (fileInput) fileInput.value = "";
   };
 
@@ -65,13 +83,13 @@ export default function AlumniRegistrationForm() {
         if (value) submitData.append(key, value);
       });
 
-      const fileInput = document.getElementById('photo');
+      const fileInput = document.getElementById("photo");
       if (fileInput.files[0]) {
-        submitData.append('photo', fileInput.files[0]);
+        submitData.append("photo", fileInput.files[0]);
       }
 
-      const response = await fetch('/api/alumni', {
-        method: 'POST',
+      const response = await fetch("/api/alumni", {
+        method: "POST",
         body: submitData,
       });
 
@@ -93,10 +111,13 @@ export default function AlumniRegistrationForm() {
         removePhoto();
         router.refresh();
       } else {
-        toast.error(result.error || "রেজিস্ট্রেশন ব্যর্থ হয়েছে। দয়া করে আবার চেষ্টা করুন।");
+        toast.error(
+          result.error ||
+            "রেজিস্ট্রেশন ব্যর্থ হয়েছে। দয়া করে আবার চেষ্টা করুন।"
+        );
       }
     } catch (error) {
-      console.error('Registration error:', error);
+      console.error("Registration error:", error);
       toast.error("নেটওয়ার্ক ত্রুটি। দয়া করে আবার চেষ্টা করুন।");
     } finally {
       setIsLoading(false);
@@ -106,24 +127,31 @@ export default function AlumniRegistrationForm() {
   return (
     <div className="max-w-4xl my-10 mx-auto bg-white rounded-lg md:rounded-2xl shadow-sm border border-gray-200 p-4 md:p-6">
       {/* Header Section with Instructions */}
-      <div className="bg-linear-to-r from-red-50 to-orange-50 rounded-lg md:rounded-xl p-4 md:p-6 mb-6 md:mb-8 border border-red-100">
-        <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-3 flex items-center gap-2">
-          <BookOpen className="w-5 h-5 md:w-6 md:h-6 text-red-600" />
-          বাঁশগ্রাম হাইস্কুল এলামনাই ডিরেক্টরিতে যোগ দিন
-        </h2>
-        
+      <div className="bg-linear-to-r mx-auto flex flex-col items-center justify-center from-red-50 to-orange-50 rounded-lg md:rounded-xl p-4 md:p-6 mb-6 md:mb-8 border border-red-100">
+        <div className="">
+          <BookOpen className="w-15 h-15 md:w-25 md:h-25 mx-auto text-red-600" />
+          <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-3 flex items-center gap-2">
+            বাঁশগ্রাম হাইস্কুল অ্যালামনাই ডিরেক্টরিতে যোগ দিন
+          </h2>
+        </div>
+       
+
         <div className="space-y-2 md:space-y-0 md:grid md:grid-cols-2 gap-3 md:gap-4 text-sm text-gray-600">
           <div className="flex items-start gap-2">
             <Info className="w-4 h-4 text-red-500 mt-0.5 shrink-0" />
-            <span className="text-xs md:text-sm">তারকাচিহ্নিত (*) ফিল্ডগুলি অবশ্যই পূরণ করতে হবে</span>
+            <span className="text-xs md:text-sm">
+              তারকাচিহ্নিত (*) ফিল্ডগুলি অবশ্যই পূরণ করতে হবে
+            </span>
           </div>
           <div className="flex items-start gap-2">
             <Info className="w-4 h-4 text-red-500 mt-0.5 shrink-0" />
-            <span className="text-xs md:text-sm">সকল তথ্য সঠিক এবং আপ-টু-ডেট থাকা প্রয়োজন</span>
+            <span className="text-xs md:text-sm">
+              সকল তথ্য সঠিক এবং আপ-টু-ডেট থাকা প্রয়োজন
+            </span>
           </div>
         </div>
       </div>
-      
+
       <form onSubmit={handleSubmit} className="space-y-6 md:space-y-8">
         {/* Photo Upload Section */}
         <div className="bg-gray-50 rounded-lg md:rounded-xl p-4 md:p-6">
@@ -157,7 +185,7 @@ export default function AlumniRegistrationForm() {
               </div>
             </div>
 
-            <div className="flex-grow w-full">
+            <div className="grow w-full">
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 প্রোফাইল ছবি (ঐচ্ছিক)
               </label>
@@ -178,10 +206,12 @@ export default function AlumniRegistrationForm() {
                     onChange={handleFileChange}
                     className="hidden"
                   />
-                  <span className="text-xs md:text-sm text-gray-500 text-center sm:text-left">JPEG, PNG, WebP (সর্বোচ্চ 2MB)</span>
+                  <span className="text-xs md:text-sm text-gray-500 text-center sm:text-left">
+                    JPEG, PNG, WebP (সর্বোচ্চ 2MB)
+                  </span>
                 </div>
                 <p className="text-xs text-gray-500">
-                  একটি পেশাদার প্রোফাইল ছবি আপনাকে সহজে চেনাতে সাহায্য করবে। 
+                  একটি পেশাদার প্রোফাইল ছবি আপনাকে সহজে চেনাতে সাহায্য করবে।
                   পরিষ্কার এবং সাম্প্রতিক ছবি ব্যবহার করার চেষ্টা করুন।
                 </p>
               </div>
@@ -197,7 +227,10 @@ export default function AlumniRegistrationForm() {
           </h3>
           <div className="grid grid-cols-1 gap-3 md:gap-4">
             <div>
-              <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="fullName"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 পুরো নাম *
               </label>
               <input
@@ -210,11 +243,16 @@ export default function AlumniRegistrationForm() {
                 placeholder="আপনার পুরো নাম লিখুন"
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition-all text-sm md:text-base"
               />
-              <p className="text-xs text-gray-500 mt-1">আপনার পুরো নাম ব্যবহার করুন</p>
+              <p className="text-xs text-gray-500 mt-1">
+                আপনার পুরো নাম ব্যবহার করুন
+              </p>
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-1">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-1"
+              >
                 <Mail className="w-4 h-4" />
                 ইমেইল *
               </label>
@@ -228,11 +266,16 @@ export default function AlumniRegistrationForm() {
                 placeholder="example@email.com"
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition-all text-sm md:text-base"
               />
-              <p className="text-xs text-gray-500 mt-1">সক্রিয় ইমেইল ঠিকানা দিন</p>
+              <p className="text-xs text-gray-500 mt-1">
+                সক্রিয় ইমেইল ঠিকানা দিন
+              </p>
             </div>
 
             <div>
-              <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-1">
+              <label
+                htmlFor="phone"
+                className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-1"
+              >
                 <Phone className="w-4 h-4" />
                 ফোন নম্বর *
               </label>
@@ -247,11 +290,16 @@ export default function AlumniRegistrationForm() {
                 pattern="[0-9]{11}"
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition-all text-sm md:text-base"
               />
-              <p className="text-xs text-gray-500 mt-1">বাংলাদেশী ফোন নম্বর ফরম্যাটে দিন (11 ডিজিট)</p>
+              <p className="text-xs text-gray-500 mt-1">
+                বাংলাদেশী ফোন নম্বর ফরম্যাটে দিন (11 ডিজিট)
+              </p>
             </div>
 
             <div>
-              <label htmlFor="bloodGroup" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="bloodGroup"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 রক্তের গ্রুপ *
               </label>
               <select
@@ -272,7 +320,9 @@ export default function AlumniRegistrationForm() {
                 <option value="O+">O+</option>
                 <option value="O-">O-</option>
               </select>
-              <p className="text-xs text-gray-500 mt-1">জরুরী অবস্থায় সাহায্যের জন্য</p>
+              <p className="text-xs text-gray-500 mt-1">
+                জরুরী অবস্থায় সাহায্যের জন্য
+              </p>
             </div>
           </div>
         </div>
@@ -285,7 +335,10 @@ export default function AlumniRegistrationForm() {
           </h3>
           <div className="grid grid-cols-1 gap-3 md:gap-4">
             <div>
-              <label htmlFor="currentCity" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="currentCity"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 বর্তমান শহর *
               </label>
               <input
@@ -298,11 +351,16 @@ export default function AlumniRegistrationForm() {
                 placeholder="আপনার বর্তমান ঠিকানা"
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition-all text-sm md:text-base"
               />
-              <p className="text-xs text-gray-500 mt-1">যে শহরে/গ্রামে আপনি বর্তমানে থাকেন</p>
+              <p className="text-xs text-gray-500 mt-1">
+                যে শহরে/গ্রামে আপনি বর্তমানে থাকেন
+              </p>
             </div>
 
             <div>
-              <label htmlFor="passingYear" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="passingYear"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 পাস করার বছর *
               </label>
               <input
@@ -317,7 +375,9 @@ export default function AlumniRegistrationForm() {
                 placeholder="২০১৬"
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition-all text-sm md:text-base"
               />
-              <p className="text-xs text-gray-500 mt-1">যে বছর আপনি SSC পাস করেছেন</p>
+              <p className="text-xs text-gray-500 mt-1">
+                যে বছর আপনি SSC পাস করেছেন
+              </p>
             </div>
           </div>
         </div>
@@ -330,7 +390,10 @@ export default function AlumniRegistrationForm() {
           </h3>
           <div className="grid grid-cols-1 gap-3 md:gap-4">
             <div>
-              <label htmlFor="jobTitle" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="jobTitle"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 পদবী *
               </label>
               <input
@@ -347,7 +410,10 @@ export default function AlumniRegistrationForm() {
             </div>
 
             <div>
-              <label htmlFor="organization" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="organization"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 প্রতিষ্ঠান *
               </label>
               <input
@@ -360,7 +426,9 @@ export default function AlumniRegistrationForm() {
                 placeholder="আপনার কর্মস্থল/শিক্ষা প্রতিষ্ঠানের নাম"
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none transition-all text-sm md:text-base"
               />
-              <p className="text-xs text-gray-500 mt-1">আপনার বর্তমান কর্মস্থল/কোম্পানি/শিক্ষা প্রতিষ্ঠান</p>
+              <p className="text-xs text-gray-500 mt-1">
+                আপনার বর্তমান কর্মস্থল/কোম্পানি/শিক্ষা প্রতিষ্ঠান
+              </p>
             </div>
           </div>
         </div>
@@ -371,7 +439,10 @@ export default function AlumniRegistrationForm() {
             প্রিয় উক্তি (ঐচ্ছিক)
           </h3>
           <div>
-            <label htmlFor="quote" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="quote"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               আপনার প্রিয় একটি উক্তি শেয়ার করুন
             </label>
             <textarea
@@ -396,7 +467,8 @@ export default function AlumniRegistrationForm() {
               রেজিস্ট্রেশন সম্পন্ন করুন
             </h3>
             <p className="text-xs md:text-sm text-gray-600 mb-4">
-              সকল তথ্য সঠিকভাবে পূরণ হয়েছে কিনা যাচাই করুন। সাবমিট করার পর আপনার তথ্য আমাদের ডাটাবেসে সংরক্ষিত হবে।
+              সকল তথ্য সঠিকভাবে পূরণ হয়েছে কিনা যাচাই করুন। সাবমিট করার পর
+              আপনার তথ্য আমাদের ডাটাবেসে সংরক্ষিত হবে।
             </p>
             <button
               type="submit"
@@ -412,13 +484,16 @@ export default function AlumniRegistrationForm() {
                 "এলামনাই ডিরেক্টরিতে যোগ দিন"
               )}
             </button>
-            
+
             {/* Environment Warning */}
             {!process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME && (
               <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
                 <div className="flex items-center gap-2 text-yellow-800">
                   <AlertCircle className="w-4 h-4" />
-                  <span className="text-xs">ছবি আপলোড সার্ভিস বর্তমানে unavailable। আপনি এখনও রেজিস্ট্রেশন করতে পারেন।</span>
+                  <span className="text-xs">
+                    ছবি আপলোড সার্ভিস বর্তমানে unavailable। আপনি এখনও
+                    রেজিস্ট্রেশন করতে পারেন।
+                  </span>
                 </div>
               </div>
             )}
